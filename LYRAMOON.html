@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CORE AI | Stealth Mode</title>
+    <style>
+        :root {
+            --primary: #000b1e;
+            --accent: #ffd700;
+            --gold-glow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--primary);
+            font-family: 'Segoe UI', sans-serif;
+            color: white;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Royal Header */
+        header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            box-shadow: var(--gold-glow);
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.2rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        /* Result Area Wrapper (The Secret Sauce) */
+        .mastermind-wrapper {
+            flex-grow: 1;
+            position: relative;
+            margin: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            background: white;
+            overflow: hidden; /* Ye faltu hisson ko kaat dega */
+            display: none;
+        }
+
+        /* Hiding Google's Header and Search Box by Positioning */
+        iframe {
+            position: absolute;
+            top: -120px; /* Google ka logo aur search bar upar push kar diya */
+            left: 0;
+            width: 100%;
+            height: calc(100% + 120px); /* Height barha di taake neechay se gap na aaye */
+            border: none;
+        }
+
+        /* Loading Screen */
+        #loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent);
+            text-align: center;
+            display: none;
+        }
+
+        /* Bottom Command Center */
+        .command-center {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input {
+            width: 60%;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: 1px solid var(--accent);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            outline: none;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            box-shadow: var(--gold-glow);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>LYRAMOON AI</h1>
+</header>
+
+<div class="mastermind-wrapper" id="resultBox">
+    <iframe id="stealthEngine" src=""></iframe>
+</div>
+
+<div id="loader">
+    <h2>Extracting Intelligence...</h2>
+</div>
+
+<div class="command-center">
+    <input type="text" id="query" placeholder="Ask the Mastermind..." />
+    <button class="btn" onclick="search()">PROCESS</button>
+</div>
+
+<script>
+    function search() {
+        const input = document.getElementById('query').value;
+        if (!input) return;
+
+        const wrapper = document.getElementById('resultBox');
+        const loader = document.getElementById('loader');
+        const engine = document.getElementById('stealthEngine');
+
+        // Show loader, hide old results
+        wrapper.style.display = 'none';
+        loader.style.display = 'block';
+
+        // Load Google in stealth mode
+        engine.src = `https://www.google.com/search?q=${encodeURIComponent(input)}&igu=1`;
+
+        // Wait a bit then show the cropped view
+        setTimeout(() => {
+            loader.style.display = 'none';
+            wrapper.style.display = 'block';
+        }, 1500);
+    }
+
+    // Enter Key Logic
+    document.getElementById('query').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') search();
+    });
+</script>
+
+</body>
+</html>
