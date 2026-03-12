@@ -3,170 +3,215 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>CORE AI | Invisible Mastermind</title>
+    <title>CORE AI | OMNIPOTENT</title>
     <style>
         :root {
-            --primary: #000b1e;
-            --accent: #ffd700;
-            --glass: rgba(255, 255, 255, 0.05);
-            --gold-glow: 0 0 25px rgba(255, 215, 0, 0.4);
+            --bg: #00050a;
+            --gold: #ffcc00;
+            --gold-dark: #b8860b;
+            --glass: rgba(255, 255, 255, 0.03);
+            --neon-glow: 0 0 30px rgba(255, 204, 0, 0.5);
         }
+
+        * { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', serif;
-            background: var(--primary);
+            background: var(--bg);
             color: white;
-            overflow: hidden;
+            font-family: 'Orbitron', sans-serif; /* Futuristic font */
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            height: 100vh;
+            overflow: hidden;
         }
 
-        /* Royal Header */
+        /* Matrix Background Animation */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.15;
+        }
+
         header {
-            padding: 25px;
+            padding: 30px;
             text-align: center;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
-            border-bottom: 2px solid var(--accent);
-            box-shadow: var(--gold-glow);
-            z-index: 10;
+            border-bottom: 1px solid var(--gold);
+            background: linear-gradient(to bottom, #000, transparent);
         }
 
-        h1 {
-            margin: 0;
-            letter-spacing: 5px;
-            color: var(--accent);
+        .system-title {
+            font-size: 2rem;
+            letter-spacing: 10px;
+            color: var(--gold);
+            text-shadow: var(--neon-glow);
             text-transform: uppercase;
-            font-size: 1.8rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin: 0;
         }
 
-        /* The Intelligence Area */
-        .content-area {
+        /* Stealth Result Container */
+        .master-container {
             flex-grow: 1;
+            margin: 30px auto;
+            width: 90%;
+            max-width: 1200px;
             position: relative;
-            background: radial-gradient(circle, #001535 0%, #000b1e 100%);
+            border: 2px solid var(--gold-dark);
+            border-radius: 5px;
+            background: black;
+            overflow: hidden;
+            box-shadow: var(--neon-glow);
+            display: none; /* Initially Hidden */
+        }
+
+        /* Hiding Google's UI Completely */
+        iframe {
+            position: absolute;
+            top: -160px; /* Highly aggressive crop to remove all Google headers */
+            left: 0;
+            width: 100%;
+            height: calc(100% + 160px);
+            border: none;
+            filter: invert(0.9) hue-rotate(180deg) contrast(1.2); /* Makes Google look like a Dark Theme AI */
+        }
+
+        /* Processing HUD */
+        #hud-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .scanner {
+            width: 300px;
+            height: 2px;
+            background: var(--gold);
+            box-shadow: var(--neon-glow);
+            animation: scan 2s infinite linear;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-50px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(50px); opacity: 0; }
+        }
+
+        /* Command Input */
+        .input-box {
+            padding: 40px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        /* Overlay to hide Google elements if needed */
-        .frame-container {
-            width: 95%;
-            height: 90%;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 1px solid var(--accent);
-            box-shadow: var(--gold-glow);
-            background: white;
-            display: none; /* Hidden until first search */
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Welcome Screen */
-        #welcome-msg {
-            text-align: center;
-            font-style: italic;
-            color: var(--accent);
-            opacity: 0.7;
-        }
-
-        /* Modern Royal Search Bar */
-        .search-container {
-            padding: 30px;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            border-top: 1px solid rgba(255, 215, 0, 0.2);
+            gap: 20px;
         }
 
         input {
             width: 50%;
-            padding: 15px 25px;
-            border-radius: 50px;
-            border: 2px solid var(--accent);
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            font-size: 1rem;
+            background: rgba(0,0,0,0.8);
+            border: 1px solid var(--gold-dark);
+            padding: 18px 30px;
+            color: var(--gold);
+            font-size: 1.1rem;
+            border-radius: 0px;
             outline: none;
-            transition: 0.3s;
+            border-left: 5px solid var(--gold);
         }
 
         input:focus {
-            box-shadow: var(--gold-glow);
-            width: 55%;
+            width: 60%;
+            border-color: var(--gold);
+            box-shadow: var(--neon-glow);
         }
 
-        .ai-btn {
-            background: var(--accent);
-            color: var(--primary);
+        .execute-btn {
+            background: var(--gold);
+            color: black;
             border: none;
-            padding: 10px 30px;
-            border-radius: 50px;
-            font-weight: bold;
-            text-transform: uppercase;
+            padding: 18px 40px;
+            font-weight: 900;
             cursor: pointer;
-            transition: 0.3s;
+            letter-spacing: 2px;
         }
 
-        .ai-btn:hover {
-            transform: scale(1.05);
-            box-shadow: var(--gold-glow);
+        .execute-btn:hover {
+            background: white;
+            box-shadow: 0 0 40px white;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
 </head>
 <body>
 
+<canvas id="matrix"></canvas>
+
 <header>
-    <h1>lyra AI SYSTEM</h1>
+    <div class="system-title">CORE OMNI-INTEL</div>
 </header>
 
-<div class="content-area">
-    <div id="welcome-msg">
-        <h2>System Ready...</h2>
-        <p>Awaiting Command for Mastermind Engine</p>
-    </div>
-    
-    <div class="frame-container" id="display-window">
-        <iframe id="mastermind-engine" src="about:blank"></iframe>
-    </div>
+<div class="master-container" id="mainCore">
+    <iframe id="stealthLayer" src=""></iframe>
 </div>
 
-<div class="search-container">
-    <input type="text" id="userQuery" placeholder="Enter your command to CORE AI..." />
-    <button class="ai-btn" onclick="executeMastermind()">Execute</button>
+<div id="hud-message">
+    <div class="scanner"></div>
+    <h2 style="color: var(--gold); letter-spacing: 5px;">AWAITING NEURAL COMMAND</h2>
+</div>
+
+<div class="input-box">
+    <input type="text" id="commandInput" placeholder="TYPE YOUR QUERY TO THE MASTERMIND..." />
+    <button class="execute-btn" onclick="engageSystem()">ENGAGE</button>
 </div>
 
 <script>
-    function executeMastermind() {
-        const query = document.getElementById('userQuery').value;
+    // Matrix Background Effect
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const letters = "0101COREAIOMNIPOTENT0101";
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function drawMatrix() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffcc00";
+        ctx.font = fontSize + "px Orbitron";
+        for (let i = 0; i < drops.length; i++) {
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
+    }
+    setInterval(drawMatrix, 50);
+
+    function engageSystem() {
+        const query = document.getElementById('commandInput').value;
         if (!query) return;
 
-        // Hide welcome message and show the result window
-        document.getElementById('welcome-msg').style.display = 'none';
-        const displayWindow = document.getElementById('display-window');
-        displayWindow.style.display = 'block';
+        document.getElementById('hud-message').innerHTML = '<div class="scanner"></div><h2 style="color: var(--gold);">DECRYPTING DATA...</h2>';
+        
+        const core = document.getElementById('mainCore');
+        const frame = document.getElementById('stealthLayer');
 
-        // Load Google search into the frame silently
-        // Using 'igu=1' to allow embedding where possible
-        const engine = document.getElementById('mastermind-engine');
-        engine.src = `https://www.google.com/search?q=${encodeURIComponent(query)}&igu=1`;
+        frame.src = `https://www.google.com/search?q=${encodeURIComponent(query)}&igu=1`;
+
+        setTimeout(() => {
+            document.getElementById('hud-message').style.display = 'none';
+            core.style.display = 'block';
+        }, 2000);
     }
 
-    // Enter key support
-    document.getElementById('userQuery').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            executeMastermind();
-        }
+    document.getElementById('commandInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') engageSystem();
     });
 </script>
 
